@@ -1,0 +1,160 @@
+State|City|Zip|StreetNumber|StreetName|Pdir|Ssfx
+,|,|,|,|bad acct,|,|,
+,|,|,|,|delete,|,|,
+,|,|,|,|do not use,|,|,
+,|,|,|,|don't use,|,|,
+,|,|,|,|delete these accts,|,|,
+,|delete these accts,|,|,|,|,|,
+||0,||||
+||99999,||||
+PA|Farrell|16121||Market||,Ave
+PA|Mercer|16137||Shenango||,St
+||||||PK,Pike
+PA|Malvern|19355||Eaves Spring||Rd,Ct
+||||||PKE,Pike
+PA|West Chester|19380||Kennett||Dr,Way
+PA|Bensalem|19020||Oldham||Pl,Ct
+PA|Jenkintown|19046||Mather||Ave,Rd
+PA|Lafayette Hill|19444||Fox Hound,Foxhound||
+PA|Paoli|19301||Paoli Shop,Paoli Shopping||,Center
+PA|Lansdowne|19050||Scotdale,scottdale||
+PA|West Chester|19380||Quaker||Ln,Ridge
+PA|Trevose|19053||Charter Court||Rd,
+PA|Bristol|19007||RT 13,Old Route 13||
+PA|Wayne|19087||Pedrick,Peddrick||
+PA|Berwyn|19312||Oak Knoll||Ct,Dr
+PA|Pheonixville|19460||Dogwood||,Dr
+PA|Newtown Square|19073||Foxhill,Fox Hill||
+PA|Trucksville,Shavertown|||Clearview||Ave
+PA|Newtown Square|19073||Wedgewood||,Cir
+PA|Lester|||Governor Printz,Governor Printz||
+PA|Lester|||Gov Printz,Governor Printz||
+PA|Lester,Tinicum Township|||Governor Printz||
+PA|Tinicum Twp,Tinicum Township|||Governor Printz||
+PA|Villanova,Radnor|||Sproul||Rd
+PA|Feasterville Trevose|||Garfield||Ave,Ln
+PA|Feasterville Trevose|||Trevose||Ave,Rd
+PA|Trevose,Feasterville Trevose|||||
+PA|Aldan,Clifton Heights|||Cricket||Ave,Ln
+PA|Strafford,Tredyffrin|||Beechtree|W|Rd,Ln
+PA|Strafford,Tredyffrin|||Birkshire|W|Rd,ter
+PA|Exton|||Anthony,Anthonys||Dr
+PA|Farrell|16121||Sharon N Castle,Sharon New Castle||
+PA||||Mercerw middlesex,Mercer W Middlesex||
+PA|Elysburg|||Valley||,Ave
+PA|Coal TOwnship,Elysburg|||Aspen||St
+PA|Locustdale,Ashland|||Middle||St
+PA|Hazleton|18202||Lake Valley|,|Dr,Drive
+PA|Chinchilla|18410,18411||Layton||
+PA|Trucksville,Kingston|18708||Meadowcrest||
+PA|Chesterbrook|||Militia Hill||Rd,Dr
+PA|Chesterbrook|||Applehse pond,Applehouse pond||
+PA|Chesterbrook|||Treaty||Rd,Dr
+PA|Chesterbrook|||Springhse Pond,Springhouse Pond||
+PA|Chesterbrook|||Springhouse Pond||,
+PA|Chesterbrook|||Millhouse Pond||,
+PA|Chesterbrook|||Meetinghouse Pond||,
+PA|Chesterbrook|||Applehouse Pond||,
+PA|Chesterbrook|||Kettlehouse Pond||,
+PA|Chesterbrook|||Sullivans brdg,Sullivans bridge||
+PA|Chesterbrook|||Flintlock||,Ln
+PA|Chesterbrook|||Espirit||,Terrace
+PA|West Chester|19380||Murdoch,Murdock||Dr
+PA|West Chester|19380||whispering oak,whispering oaks||,Dr
+||||||ct,court
+||||||ter,terrace
+PA|West Chester|19380||copeland schoo,copeland school||
+PA|West Chester,chester|19380||brook||Dr
+PA|West Chester|19380||jefferis brdg,jefferis bridge||
+PA|Cynwyd,Bala Cynwyd|||Bryn Mawr||
+PA|Exton|||Oak,Oak Lane West|W|
+PA|Exton|||Oak,Oak Lane East|E|
+PA|Exton|||Cambridge Chas,Cambridge chase||,
+PA|Exton|||John Robert Th,John Robert Thomas||Dr
+PA|Ardmore,Havertown|||Walnut Hill||,Ln
+PA|Havertown|||Annabelle,annabella||ave
+PA|King of Prussia|||Gen Scott,General Scott||,Rd
+PA|King of Prussia|||Gen Muhlenberg,General Muhlenberg||,Rd
+PA|King of Prussia|||Gen Learned,General Learned||,Rd
+PA|King of Prussia|||Gen Armstrong,General Armstrong||,Rd
+PA|King of Prussia|||Gen Muhlenburg,General Muhlenberg||,Rd
+PA|King of Prussia|||Gen Steuben,General Steuben||,Rd
+PA|King of Prussia|||Prince Fredric,Prince Frederick||,St
+PA|King of Prussia|||Gen Knox,General Knox||,Rd
+PA|King of Prussia|||Valley Brook,Valley Brooke||Dr
+PA|Hatboro|||abbotts,abbott||Rd
+PA|Secane,Ridley|||Armstrong||Rd,Ave
+PA|West Chester|||Bala,Bala Terrace West|W,|,
+PA|West Chester|||Bala,Bala Terrace East|E,|,
+PA|Downingtown,Coatesville|||Bally Moor||Dr
+PA|Swarthmore|19081||Benjamin, Benjamin West|,|Ave
+PA|Bensalem|||Bensalem Ave West,Bensalem|,W|,Ave
+PA|Bensalem|||Bensalem Ave East,Bensalem|,E|,Ave
+PA|Hatboro|||Blair Mill|,|Rd
+PA|Secane,Ridley|||Bob white||Rd,Ln
+PA|Lackawaxen|||Bridal,Bridle||Rd
+PA||||britmoir,brittmore||,Ave
+PA|Morton|19070||Brook,Brooke||
+PA|Reading|||Buckhaven,Buck Haven||,
+PA|,Woodlyn|||Bullens||Ln
+PA|Chalfont,Brittany Farms-Highlands|18914||Butler||,Dr
+PA|Bensalem|||capt m major,captain milton e major||Ave
+PA||||Carpenters Cov,carpenters cove||
+PA|Mifflinville,Nescopeck|18631,18635||center||dr
+PA|Aristes,Ashland|||centre||st
+PA|Phoenixville|||charlestown ht,charlestown hunt||dr
+PA|Athens|,18810||Chemung||St
+PA|Shamokin,Mashallton|17872,17866||Chemung||St
+PA|West Chester|,19380||Chessie||Court
+PA|Upper Darby|,19082||Church||Ln
+PA|Wayne|,19087||Church||Rd
+PA|Wyncote|,19095||Church||Rd
+PA|Locust Gap,Mt Carmel|||Church||St
+PA|West Chester|19383,19382|||Church|s|ave
+PA|Hillsville,Mahoning|16132||Church||,rd
+PA|Wynnewood,Bala Cynwyd|,19004||city line|,w|ave
+PA|saylorsburg|18353|||Clayton||St,Ave
+PA|Broomall|,19008||Cloverly Hl,Cloverly Hill||rd
+PA|Saylorsburg|,18353||clubhouse||,rd
+PA|Saylorsburg|||club house, clubhouse||
+PA|Plymouth Meeting|19462||cold point,cold point hill||rd
+PA|Geigertown,Robeson|||cold run||rd
+PA|Strafford,Wayne|||colket||ln
+PA|Wayne|,19087||colket||ln
+PA|Newtown Square|,19073||columbia court||way
+PA|Berwyn,Radnor|,19087||Conestoga||Rd
+PA|Chesterbrook|,19087||constitution||,court
+PA|Valley Forge,Pheonixville|,19460||continental||Dr
+PA|Huntingdon Valley|19006||copper beech||,rd
+PA|newtown square|,19073||Cornell||Court
+PA|harding,exeter|18643||crest||st
+PA|secane,ridley|,19018||cricket||,rd
+PA|Aston|,19014||cozerville||rd
+PA|Malvern|,19355||culpepper||court
+PA|Chesterbrook|,19087||curtis||court
+PA|Berwyn|,19312||Daylesford||blvd
+PA|rosemont,lower merion|||derring||,ln
+PA|Athens|,18810||Desmond||St
+PA|,Charlestown|||Devault||,ln
+PA|Malvern|19355||Devon||Rd
+PA|Aston|,19014||Drayton||Rd
+PA|Fort Washington|,19034||Dreshertown||Rd
+PA|West Chester|,19380||Durant||Court
+PA|Lavelle,Ashland|||Dutch||Rd
+PA|Chesterbrook|||Eagle Ridge||rd, dr
+PA|Newtown Square|,19073||Eagle View,Eagleview||dr
+PA|Media,Upper Providence Township|||Ebie||Cir
+PA|Roslyn,Abington|,19001||Edge Hill||Rd
+PA|Chester Springs,Upper Uwchlan|19425||Elmhurst||Dr
+PA|Chesterbrook|||espirit||ln,terrace
+PA|Lavelle,Butler|||Fairgrounds||rd
+PA|Radnor,Wayne|||Fairhill||Cir
+PA|St Davids,Radnor|,19087||Fairview||rd,dr
+PA|Exton|,19341||Firethorn,Firethorne||,cir
+PA|Wyndmoor|19038||Firethorn,Firethorne||,ln
+PA|Sharon|,16146||Fisher,Fisher Hill||hl,st
+PA|Chesterbrook|,19087||flintlock||ln
+PA|Reading|||flying hills village center,village center||,dr
+PA|Reading|||flying hills village ceneter,village center||,dr
+PA|Reading|||flying hills corp ctr,village center||,dr
+PA|Reading|||flying hills vlg,village center||,dr
