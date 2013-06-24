@@ -1,12 +1,14 @@
 #-------------------------------------------------------------------------------
 # Name:        File Examiner
-# Purpose:
+# Purpose:     To extract and format customer files that follow a certain
+#              format (which is lenient), and also to facilitate the fixing of
+#              errors using the Error_Fixer.py module. This project was created
+#              for GeoDataModelers, Inc., the GIS contractor for the Aqua
+#              America Engineering Department in Bryn Mawr, PA location.
 #
 # Author:      Matt Brenman
 #
 # Created:     28/05/2013
-# Copyright:   (c) Joe 2013
-# Licence:     <your licence>
 #-------------------------------------------------------------------------------
 
 import string #Used to remove punctuation from addresses
@@ -16,9 +18,10 @@ def main():
     global State
     data_file, type_list = get_file()
     curState = raw_input("Which US State does this data describe?\n")
-    acct_numbers = organize_by_acct_num(type_list, data_file)
-    menu(acct_numbers)
+    acct_numbers, accts = organize_by_acct_num(type_list, data_file)
+    menu(accts, type_list)
     data_file.close()
+
 
 def fix_field_names():
     global StreetNum, Direction, StreetName, StreetSuffix, City, Zip, Account, \
@@ -56,7 +59,7 @@ def get_file():
     else:
         return data_file, type_list
 
-def menu(acct_numbers):
+def menu(accts, type_list):
     """ A menu that allows the user to choose which operation to perform """
     address_list = []
     address_list_made = False #Allows address list to only be made once
@@ -69,25 +72,25 @@ def menu(acct_numbers):
                               '3: Exit\n')
         if (operation == '1'):
             if (not address_list_made):
-                address_list = make_addresses(acct_numbers)
+                make_addresses(accts)
                 address_list_made = True
-            print_addresses(address_list)
+            print_addresses(accts)
         elif (operation == '2'):
             out_file = raw_input('What is the output file name?\n'
                                  'Caution: Using a file name that already\n'
                                  'exists will overwrite the existing file\n')
             address_file = open(out_file, 'w')
             if (not address_list_made):
-                address_list = make_addresses(acct_numbers)
+                make_addresses(accts)
                 address_list_made = True
             limit_to_string = raw_input('Would you like to limit the search?\n'
                                         '1: Yes\n2: No\n')
             if (limit_to_string == '1'):
                 limit = raw_input('Enter search string\n')
                 limit = limit.lower()
-                print_addresses_to_file(address_list, address_file, limit)
+                print_addresses_to_file(accts, address_file, type_list, limit)
             else:
-                print_addresses_to_file(address_list, address_file, '')
+                print_addresses_to_file(accts, address_file, type_list, '')
             address_file.close()
 
 def read_header(data_file):
@@ -106,6 +109,7 @@ def organize_by_acct_num(type_list, client_file):
     """ Puts all client data in a dictionary
         accessed by unique account number """
     acct_numbers = {}
+    accts = []
     for line in client_file:
         info = line.split(delimiter) #Raw single-client data
         client_dict = {}
@@ -118,43 +122,35 @@ def organize_by_acct_num(type_list, client_file):
             if good_acct(client_dict):
                 #if 'meternotes' exists, check for disqualifiers
                 acct_numbers[client_dict[Account]] = client_dict
+                accts.append(client_dict)
                 #Add client to list of all clients by acct number ('premises')
         else:
             #Catches incomplete client data with fewer fields than necessary
             print "Error with client: ", info
-    return acct_numbers
+    return acct_numbers, accts
 
-def make_addresses(client_data):
+def make_addresses(accts):
     """ Extracts and formats relevant address data from client data """
-    address_list = []
-    for client_key in client_data:
-        new_address = {}
-        client = client_data[client_key]
-        new_address[FirstName] = remove_punctuation(client[FirstName])
-        new_address[LastName] = remove_punctuation(client[LastName])
-        new_address[ServiceType] = remove_punctuation(client[ServiceType])
-
-        client_addr = fix_address(client_data[client_key])
+    for client in accts:
+        client_addr = fix_address(client)
         #Set street information
-        new_address[newAddress] = client[StreetNum]
+        client[newAddress] = client_addr[StreetNum]
         if client_addr[Direction] != "":
-            new_address[newAddress] += " " + fix_case(client_addr[Direction])
-        new_address[newAddress] += " " + fix_case(client_addr[StreetName]) +  \
+            client[newAddress] += " " + fix_case(client_addr[Direction])
+        client[newAddress] += " " + fix_case(client_addr[StreetName]) +  \
                                  " " + fix_case(client_addr[StreetSuffix])
-        new_address[newAddress] = remove_bad_spaces(new_address[newAddress])
-        new_address[Zip] = client_addr[Zip]
-        new_address[City] = fix_case(client_addr[City])
-        new_address[State] = client_addr[State].upper()
+        client[newAddress] = remove_bad_spaces(client[newAddress])
+        client[Zip] = zip_to_string(client_addr[Zip])
+        client[City] = fix_case(client_addr[City])
+        client[State] = client_addr[State].upper()
         #Keep split up address info for reprocessing after geocoding
-        new_address[StreetNum] = remove_punctuation(client_addr[StreetNum])
-        new_address[Direction] = remove_punctuation(client_addr[Direction])
-        new_address[StreetName] = remove_punctuation(client_addr[StreetName])
-        new_address[StreetSuffix] = remove_punctuation(client_addr[StreetSuffix])
-        new_address[Account] = remove_punctuation(client_key)
-
-        full_address = format_address(new_address)
-        address_list.append(full_address)
-    return address_list
+        client[StreetNum] = client_addr[StreetNum]
+        client[Direction] = client_addr[Direction]
+        client[StreetName] = client_addr[StreetName]
+        client[StreetSuffix] = client_addr[StreetSuffix]
+        for field in client:
+            if field != Zip:
+                client[field] = remove_punctuation(client[field])
 
 def good_acct(client):
     if 'meternotes' in client:
@@ -195,24 +191,12 @@ def format_zipcodes(zipcode):
             zip_list.append("")
     return zip_list
 
-def format_address(new_address):
-    """ Joins relevant fields to conform to the standard output format """
-    full_address = new_address[FirstName] + ',' +                      \
-                   new_address[LastName] + ',' +                       \
-                   new_address[ServiceType] + "," +                    \
-                   remove_punctuation(new_address[newAddress]) + "," + \
-                   new_address[City] + "," +                           \
-                   new_address[State] + ',' +                          \
-                   new_address[Zip][0]
-    if (new_address[Zip][1] != '') and (new_address[Zip][1] != '0000'):
-        full_address += '-' + new_address[Zip][1]
-    full_address += ',' + new_address[StreetNum] + ',' +               \
-                    new_address[Direction] + ',' +                     \
-                    new_address[StreetName] + ',' +                    \
-                    new_address[StreetSuffix] + ',' +                  \
-                    new_address[Account]
-    fix_case(full_address)
-    return full_address
+def zip_to_string(zipcode):
+    zip_string = zipcode[0]
+    if zipcode[1] != '':
+        zip_string += '-' + zipcode[1]
+    return zip_string
+
 
 def fix_case(words):
     """ Puts words in mixed case, where only first letter is capitalized """
@@ -229,7 +213,7 @@ def fix_case(words):
 
 def remove_punctuation(line):
     for punc in string.punctuation:
-        line = line.replace(punc, "")
+        line = line.replace(punc,'')
     return line
 
 def too_many_dashes(zipcode):
@@ -241,21 +225,29 @@ def too_many_dashes(zipcode):
     if count > 1: return True
     return False
 
-def print_addresses_to_file(address_list, address_file, limit):
-    address_file.write(FirstName + ',' + LastName + ',' + ServiceType + ',' +
-                       newAddress + ',' + City + ',' + State + ',' + Zip + ',' +
-                       StreetNum + ',' + Direction + ',' + StreetName + ',' +
-                       StreetSuffix + ',' + Account + '\n')
-                       #Header with column names
-    for address in address_list:
-        empty_test = address.replace(',','')
-        empty_test = empty_test.replace(' ','')
-        if empty_test != '':
-            if limit != '':
-                if limit in address.lower():
-                    address_file.write(address + "\n")
+def print_addresses_to_file(accts, address_file, type_list, limit):
+    sorted_keys = []
+    for key in type_list:
+        sorted_keys.append(key)
+    sorted_keys.append(newAddress)
+    sorted_keys.append(State)
+    sorted_keys = sorted(sorted_keys)
+    for i in range(len(sorted_keys)):
+        address_file.write(sorted_keys[i])
+        if i != len(sorted_keys) - 1:
+            address_file.write(',')
+        else:
+            address_file.write('\n')
+    for acct in accts:
+        for i in range(len(sorted_keys)):
+            field_data = str(acct[sorted_keys[i]])
+            if len(field_data) < 253:
+                address_file.write(field_data)
+            if i != len(sorted_keys) - 1:
+                address_file.write(',')
             else:
-                address_file.write(address + "\n")
+                address_file.write('\n')
+
 
 def print_addresses(address_list):
     print "street,city,state,zip" #Header with column names
@@ -303,5 +295,5 @@ if __name__ == '__main__':
     newAddress = 'newAddress'
     changeFields = raw_input('Would you like to change any field names? (y/n)')
     if changeFields == 'y': fix_field_names()
-    ERRORS = Error_Fixer.error_setup(Zip)
+    ERRORS = Error_Fixer.error_setup([State, City, Zip, StreetNum, StreetName, Direction, StreetSuffix], Zip)
     main()
