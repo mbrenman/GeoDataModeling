@@ -16,18 +16,20 @@ import csv
 
 georesult = arcpy.GetParameterAsText(0)
 outfile = arcpy.GetParameterAsText(1)
+outfolder = arcpy.GetParameterAsText(2)
 
+print outfolder
 arcpy.env.overwriteOutput = True
-arcpy.TableToTable_conversion(georesult, "P:/mattSummer2013/BannerData/", "unmatchtest", "Status = 'U'")
+arcpy.TableToTable_conversion(georesult, outfolder, "unmatchtable", "Status = 'U'")
 
-fields = arcpy.ListFields("unmatchtest")
+fields = arcpy.ListFields("unmatchtable")
 field_names = [field.name for field in fields]
 
 #Write a comma delimited file
 f = open(outfile, "w")
 w = csv.writer(f)
 w.writerow(field_names)
-for row in arcpy.SearchCursor("unmatchtest"):
+for row in arcpy.SearchCursor("unmatchtable"):
     field_vals = [row.getValue(field.name) for field in fields]
     w.writerow(field_vals)
 del row
