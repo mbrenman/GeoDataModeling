@@ -1,21 +1,22 @@
 #-------------------------------------------------------------------------------
-# Name:        module1
-# Purpose:
+# Name:        Error Fixer
+# Purpose:     To correct address data against a formatted set of known errors
+#              that follows a standard documented in the README when run from
+#              another program. When run as the main script, it allows for the
+#              addition of errors to the known error databank.
 #
 # Author:      Matt Brenman
 #
-# Created:     04/06/2013
-# Copyright:   (c) Matt Brenman 2013
-# Licence:     <your licence>
+# Created:     28/05/2013
 #-------------------------------------------------------------------------------
 
 #Global varibles
 DELIMITER = '|'
 ZIP = 'zip' #Placeholder for zip
 
-def error_setup(Zip):
+def error_setup(header, Zip):
     error_file = get_error_file('r')
-    header_list = read_header(error_file)
+    header_list = header
     errors = organize(header_list, error_file)
     error_file.close()
     ZIP = Zip #Zip needs to be singled out because of formatting differences
@@ -36,13 +37,6 @@ def get_error_file(usage, filename='Error_file.txt'):
 def fix_addresses(errors, address):
     find_matches(errors, address)
     return address
-
-def read_header(data_file):
-    type_line = (data_file.readline()).strip()
-    #All column names are forced to lowercase to avoid case errors
-    type_line = type_line.lower()
-    type_list = type_line.split(DELIMITER)
-    return type_list
 
 def organize(header_list, error_file):
     errors = []
@@ -102,10 +96,8 @@ def create_record(unchanged_address):
 
 def error_match(error, address):
     for key in error:
-        if (error[key][0] != ''):
-            if key not in address:
-                pass
-            elif key == ZIP:
+        if (error[key][0] != '') and key in address:
+            if key == ZIP:
                 #ZIP is singled out since it is a list not a string
                 if error[key][0][1] != '': #Format XXXXX-XXXX
                     if address[key][1] != error[key][0][1]:
