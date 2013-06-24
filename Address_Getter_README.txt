@@ -36,10 +36,9 @@ Significant Stages:
 Implementation:
 --Data Structures:
         The main data structure in this module is the address list. The address list
-     is a dictionary where the keys are the account number for each client (which 
-     gives a unique identifier to each one). The value to each account number key in
-     the dictionary gives another dictionary where that is indexed by field name of
-     the banner file. This makes it easy to format each address when needed, since 
+     is a list of dictionaries, where each is indexed by field names given by
+     the banner file. Each list element contains the information of one customer.
+     This makes it easy to format each address when needed, since 
      it allows the script to pull out the necessary fields in a way that is easy to
      follow.
 --Formatting
