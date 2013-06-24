@@ -18,7 +18,7 @@ def main():
     global State
     data_file, type_list = get_file()
     curState = raw_input("Which US State does this data describe?\n")
-    acct_numbers, accts = organize_by_acct_num(type_list, data_file)
+    accts = organize_by_acct(type_list, data_file)
     menu(accts, type_list)
     data_file.close()
 
@@ -105,10 +105,8 @@ def read_header(data_file):
             type_list[i] = type_list[i][:10]
     return type_list
 
-def organize_by_acct_num(type_list, client_file):
-    """ Puts all client data in a dictionary
-        accessed by unique account number """
-    acct_numbers = {}
+def organize_by_acct(type_list, client_file):
+    """ Puts all client data in a list by scct """
     accts = []
     for line in client_file:
         info = line.split(delimiter) #Raw single-client data
@@ -121,13 +119,12 @@ def organize_by_acct_num(type_list, client_file):
                     client_dict[City] = info[i] #city to city_1
             if good_acct(client_dict):
                 #if 'meternotes' exists, check for disqualifiers
-                acct_numbers[client_dict[Account]] = client_dict
                 accts.append(client_dict)
                 #Add client to list of all clients by acct number ('premises')
         else:
             #Catches incomplete client data with fewer fields than necessary
             print "Error with client: ", info
-    return acct_numbers, accts
+    return accts
 
 def make_addresses(accts):
     """ Extracts and formats relevant address data from client data """
