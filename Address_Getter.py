@@ -14,14 +14,36 @@
 import string #Used to remove punctuation from addresses
 import Error_Fixer
 
+#Global Variables -- Can be overwritten if a file with different
+#headers is given (Will be prompted at runtime)
+delimiter = '|'
+StreetNum = "streetnumb"
+Direction = "pdir"
+StreetName = "streetname"
+StreetSuffix = "ssfx"
+City = "city"
+Zip = "zip"
+Account = "premises"
+State = "state"
+FirstName = "firstname"
+LastName = "lastname"
+ServiceType = "servicetyp"
+curState = "PA"
+newAddress = 'newAddress'
+
 def main():
     global State
+    Errors = setup()
     data_file, type_list = get_file()
     curState = raw_input("Which US State does this data describe?\n")
     accts = organize_by_acct(type_list, data_file)
-    menu(accts, type_list)
+    menu(accts, type_list, Errors)
     data_file.close()
 
+def setup():
+    changeFields = raw_input('Would you like to change any field names? (y/n)')
+    if changeFields == 'y': fix_field_names()
+    return Error_Fixer.error_setup([State, City, Zip, StreetNum, StreetName, Direction, StreetSuffix], Zip)
 
 def fix_field_names():
     global StreetNum, Direction, StreetName, StreetSuffix, City, Zip, Account, \
@@ -59,7 +81,7 @@ def get_file():
     else:
         return data_file, type_list
 
-def menu(accts, type_list):
+def menu(accts, type_list, Errors):
     """ A menu that allows the user to choose which operation to perform """
     address_list = []
     address_list_made = False #Allows address list to only be made once
@@ -72,7 +94,7 @@ def menu(accts, type_list):
                               '3: Exit\n')
         if (operation == '1'):
             if (not address_list_made):
-                make_addresses(accts)
+                make_addresses(accts, Errors)
                 address_list_made = True
             print_addresses(accts)
         elif (operation == '2'):
@@ -81,7 +103,7 @@ def menu(accts, type_list):
                                  'exists will overwrite the existing file\n')
             address_file = open(out_file, 'w')
             if (not address_list_made):
-                make_addresses(accts)
+                make_addresses(accts, Errors)
                 address_list_made = True
             limit_to_string = raw_input('Would you like to limit the search?\n'
                                         '1: Yes\n2: No\n')
@@ -106,7 +128,7 @@ def read_header(data_file):
     return type_list
 
 def organize_by_acct(type_list, client_file):
-    """ Puts all client data in a list by scct """
+    """ Puts all client data in a list by acct"""
     accts = []
     for line in client_file:
         info = line.split(delimiter) #Raw single-client data
@@ -117,51 +139,36 @@ def organize_by_acct(type_list, client_file):
                                                     #data to the correct type
                 if type_list[i] == 'city_1': #For recoding, arcmap changes
                     client_dict[City] = info[i] #city to city_1
-            if good_acct(client_dict):
-                #if 'meternotes' exists, check for disqualifiers
-                accts.append(client_dict)
-                #Add client to list of all clients by acct number ('premises')
+            accts.append(client_dict)
+            #Add client to list of all clients by acct number ('premises')
         else:
             #Catches incomplete client data with fewer fields than necessary
             print "Error with client: ", info
     return accts
 
-def make_addresses(accts):
+def make_addresses(accts, Errors):
     """ Extracts and formats relevant address data from client data """
     for client in accts:
-        client_addr = fix_address(client)
+        client_addr = fix_address(client, Errors)
         #Set street information
-        client[newAddress] = client_addr[StreetNum]
-        if client_addr[Direction] != "":
-            client[newAddress] += " " + fix_case(client_addr[Direction])
-        client[newAddress] += " " + fix_case(client_addr[StreetName]) +  \
-                                 " " + fix_case(client_addr[StreetSuffix])
-        client[newAddress] = remove_bad_spaces(client[newAddress])
-        client[Zip] = zip_to_string(client_addr[Zip])
-        client[City] = fix_case(client_addr[City])
-        client[State] = client_addr[State].upper()
+        client[newAddress] = combine_addr_data(client_addr)
         #Keep split up address info for reprocessing after geocoding
-        client[StreetNum] = client_addr[StreetNum]
-        client[Direction] = client_addr[Direction]
-        client[StreetName] = client_addr[StreetName]
-        client[StreetSuffix] = client_addr[StreetSuffix]
+        for key in client_addr:
+            if key != Zip:
+                client[key] = client_addr[key]
         for field in client:
-            if field != Zip:
+            if field != Zip: #Don't want to remove '-' from zipcodes
                 client[field] = remove_punctuation(client[field])
 
-def good_acct(client):
-    if 'meternotes' in client:
-        if "bad acct" in client['meternotes'].lower():
-            return False
-        if "do not use" in client['meternotes'].lower():
-            return False
-        if "don't use" in client['meternotes'].lower():
-            return False
-        if "delete these accts" in client['meternotes'].lower():
-            return False
-    return True
+def combine_addr_data(client_addr):
+    new_addr = client_addr[StreetNum]
+    if client_addr[Direction] != "":
+        new_addr += " " + client_addr[Direction]
+    new_addr += " " + client_addr[StreetName] + " " + client_addr[StreetSuffix]
+    new_addr = fix_case(new_addr)
+    return remove_bad_spaces(new_addr)
 
-def fix_address(raw_address):
+def fix_address(raw_address, Errors):
     """ Calls the error fixing module to resolve known errors in the data """
     edit_address = {}
     edit_address[StreetNum] = remove_leading_zeros(raw_address[StreetNum])
@@ -171,7 +178,7 @@ def fix_address(raw_address):
     edit_address[Zip] = format_zipcodes(raw_address[Zip])
     edit_address[City] = raw_address[City].strip().lower()
     edit_address[State] = curState
-    return Error_Fixer.fix_addresses(ERRORS, edit_address)
+    return Error_Fixer.fix_addresses(Errors, edit_address)
 
 def format_zipcodes(zipcode):
     """ Separates zipcodes into a list of ['xxxxx','xxxx'] where
@@ -193,7 +200,6 @@ def zip_to_string(zipcode):
     if zipcode[1] != '':
         zip_string += '-' + zipcode[1]
     return zip_string
-
 
 def fix_case(words):
     """ Puts words in mixed case, where only first letter is capitalized """
@@ -245,7 +251,6 @@ def print_addresses_to_file(accts, address_file, type_list, limit):
             else:
                 address_file.write('\n')
 
-
 def print_addresses(address_list):
     print "street,city,state,zip" #Header with column names
     for address in address_list:
@@ -274,23 +279,4 @@ def remove_bad_spaces(address):
     return address
 
 if __name__ == '__main__':
-    #Global Variables -- Can be overwritten if a file with different
-    #headers is given (Will be prompted at runtime)
-    delimiter = '|'
-    StreetNum = "streetnumb"
-    Direction = "pdir"
-    StreetName = "streetname"
-    StreetSuffix = "ssfx"
-    City = "city"
-    Zip = "zip"
-    Account = "premises"
-    State = "state"
-    FirstName = "firstname"
-    LastName = "lastname"
-    ServiceType = "servicetyp"
-    curState = "PA"
-    newAddress = 'newAddress'
-    changeFields = raw_input('Would you like to change any field names? (y/n)')
-    if changeFields == 'y': fix_field_names()
-    ERRORS = Error_Fixer.error_setup([State, City, Zip, StreetNum, StreetName, Direction, StreetSuffix], Zip)
     main()
