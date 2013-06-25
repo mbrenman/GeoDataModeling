@@ -11,35 +11,70 @@ Purpose: To convert a geocoded set of points (with a corresponding shapefile
 
 """
 
+def remove_bad_keys(field_names, geofields):
+#Forces the keys of the first arg table to be a subset of keys of the
+#second table. Both inputs must be tables.
+    for f in field_names:
+        if not f in geofields:
+            field_names.remove(f)
+            remove_bad_keys(field_names, geofields)
+            #The remove() function is causing a break in the loop,
+            #so there needs to be a recursive call
+
 import arcpy
-import csv
 
 georesult = arcpy.GetParameterAsText(0)
-outfile = arcpy.GetParameterAsText(1)
-outfolder = arcpy.GetParameterAsText(2)
+origtext = arcpy.GetParameterAsText(1)
+outfile = arcpy.GetParameterAsText(2)
 
-print outfolder
-arcpy.env.overwriteOutput = True
-arcpy.TableToTable_conversion(georesult, outfolder, "unmatchtable", "Status = 'U'")
+output_file = open(outfile, "w")
 
-fields = arcpy.ListFields("unmatchtable")
-field_names = [field.name for field in fields]
+#Get header from original address file
+desc = arcpy.Describe(origtext)
+fields = desc.Fields
 
-#Write a comma delimited file
-f = open(outfile, "w")
-w = csv.writer(f)
-w.writerow(field_names)
-for row in arcpy.SearchCursor("unmatchtable"):
-    field_vals = [row.getValue(field.name) for field in fields]
-    w.writerow(field_vals)
-del row
-f.close() #Finish writing all from buffer, so we can reformat
+#Get field names from address file
+field_names = []
+for field in fields:
+    if ((str)(field.name) == 'city'):
+        field_names.append('city_1') #Arcmap changes city to city_1 at entry
+    else:
+        field_names.append((str)(field.name))
 
-#Change delimiter from comma to pipe
-f = open(outfile, "r+")
-lines = [line for line in f]
-f.seek(0)
-for line in lines:
-    line = line.replace(',','|')
-    f.write(line)
-f.close
+#Get field names from the ArcMap Table
+desc2 = arcpy.Describe(georesult)
+geofields = []
+for f in desc2.Fields:
+    geofields.append((str)(f.name))
+
+#Handle differences between the two tables
+remove_bad_keys(field_names, geofields)
+
+#Write header
+for i in range(len(field_names)):
+    val = (str)(field_names[i])
+    val = val.rstrip()
+    output_file.write(val)
+    if i < (len(field_names) - 1):
+        output_file.write('|')
+    else:
+        output_file.write('\n')
+
+#Get SearchCursor for all unmapped addresses and pull field_names
+cur  = arcpy.da.SearchCursor(georesult, field_names, "Status = 'U'")
+
+#Print all unmatched addresses
+for row in cur:
+    for i in range(len(row)):
+        val =(str)(row[i])
+        val = val.rstrip()
+        output_file.write(val)
+        if i < (len(row) - 1):
+            output_file.write('|')
+        else:
+            output_file.write('\n')
+
+output_file.close()
+
+
+
