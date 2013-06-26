@@ -22,3 +22,18 @@ Troubleshooting:
                   is no need to worry about overwriting this field, since it will
                   either be filled with the same information or more updated 
                   information.
+                  
+    Problem: ArcMap doesn't know which field to use for "City"
+        Solution: The standard field name that is used for the city (from the
+                  banner files) is 'city', which is usually what the answer is.
+                  The field name will change, however, if the GetUnmatched tool
+                  is used. ArcMap does not allow a user's field name to be city,
+                  so upon geocoding (which is necessary to use the GetUnmatched
+                  tool in the first place), ArcMap changes the name to 'city_1'.
+                  
+    Problem: ArcMap doesn't know which field to use, and the above didn't help.
+        Solution: If none of the suspected field names are in the pull-down menu,
+                  you should either check the text file, or run the unique fields
+                  module and find the name under which the information in question
+                  is listed.
+                  
