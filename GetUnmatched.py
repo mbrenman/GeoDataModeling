@@ -2,12 +2,14 @@
 Author: Matt Brenman
 
 Purpose: To convert a geocoded set of points (with a corresponding shapefile
-         result table containing all attributes) into a tab delimited version
+         result table containing all attributes) into a pipe delimited version
          of the unmatched addresses. This is used because it is redundant to
          re-geocode the matched addresses (which are on the scale of hundreds
          of thousands). This saves time in recoding addresses, and it allows us
          to see bigger picture errors in the file instead of limiting ourselves
          to each city (which we can still do if needed)
+         Note: This module only keeps the same fields that are in the original
+         address file and does not add in the extra fields created by ArcMap.
 
 """
 
