@@ -11,16 +11,6 @@ Purpose: To convert a geocoded set of points (with a corresponding shapefile
 
 """
 
-def remove_bad_keys(field_names, geofields):
-#Forces the keys of the first arg table to be a subset of keys of the
-#second table. Both inputs must be tables.
-    for f in field_names:
-        if not f in geofields:
-            field_names.remove(f)
-            remove_bad_keys(field_names, geofields)
-            #The remove() function is causing a break in the loop,
-            #so there needs to be a recursive call
-
 import arcpy
 
 georesult = arcpy.GetParameterAsText(0)
@@ -48,7 +38,12 @@ for f in desc2.Fields:
     geofields.append((str)(f.name))
 
 #Handle differences between the two tables
-remove_bad_keys(field_names, geofields)
+#Forces the keys of the first arg table to be a subset of keys of the
+#second table. Both inputs must be tables.
+for f in field_names[:]: #make a copy of the list, so that we are iterating
+                         #over a non-changing list
+    if not f in geofields:
+        field_names.remove(f)
 
 #Write header
 for i in range(len(field_names)):
