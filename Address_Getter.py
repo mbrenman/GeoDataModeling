@@ -157,6 +157,8 @@ def make_addresses(accts, Errors):
             if key != Zip:
                 client[key] = client_addr[key]
         for field in client:
+            #Remove newlines from all fields, including zipcode
+            client[field] = client[field].rstrip('\n')
             if field != Zip: #Don't want to remove '-' from zipcodes
                 client[field] = remove_punctuation(client[field])
 
