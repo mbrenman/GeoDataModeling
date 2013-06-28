@@ -105,10 +105,11 @@ def menu(accts, type_list, Errors):
             if (not address_list_made):
                 make_addresses(accts, Errors)
                 address_list_made = True
-            limit_to_string = raw_input('Would you like to limit the search?\n'
+            limit_to_string = raw_input('Would you like to limit '
+                                        'the search to a city?\n'
                                         '1: Yes\n2: No\n')
             if (limit_to_string == '1'):
-                limit = raw_input('Enter search string\n')
+                limit = raw_input('Enter city name\n')
                 limit = limit.lower()
                 print_addresses_to_file(accts, address_file, type_list, limit)
             else:
@@ -231,27 +232,37 @@ def too_many_dashes(zipcode):
     return False
 
 def print_addresses_to_file(accts, address_file, type_list, limit):
+    sorted_keys = sort_keys(type_list)
+    print_header(sorted_keys, address_file)
+    print_customers(accts, address_file, sorted_keys, limit)
+
+def sort_keys(type_list):
     sorted_keys = []
     for key in type_list:
         sorted_keys.append(key)
     sorted_keys.append(newAddress)
     sorted_keys.append(State)
-    sorted_keys = sorted(sorted_keys)
+    return sorted(sorted_keys)
+
+def print_header(sorted_keys, address_file):
     for i in range(len(sorted_keys)):
         address_file.write(sorted_keys[i])
         if i != len(sorted_keys) - 1:
             address_file.write(',')
         else:
             address_file.write('\n')
+
+def print_customers(accts, address_file, sorted_keys, limit):
     for acct in accts:
-        for i in range(len(sorted_keys)):
-            field_data = str(acct[sorted_keys[i]])
-            if len(field_data) < 253:
-                address_file.write(field_data)
-            if i != len(sorted_keys) - 1:
-                address_file.write(',')
-            else:
-                address_file.write('\n')
+        if limit in acct[City]:
+            for i in range(len(sorted_keys)):
+                field_data = str(acct[sorted_keys[i]])
+                if len(field_data) < 253:
+                    address_file.write(field_data)
+                if i != len(sorted_keys) - 1:
+                    address_file.write(',')
+                else:
+                    address_file.write('\n')
 
 def print_addresses(address_list):
     print "street,city,state,zip" #Header with column names
