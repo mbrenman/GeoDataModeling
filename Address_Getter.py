@@ -32,10 +32,10 @@ curState = "PA"
 newAddress = 'newAddress'
 
 def main():
-    global State
+    global curState
+    curState = raw_input("Which US State does this data describe?\n")
     Errors = setup()
     data_file, type_list = get_file()
-    curState = raw_input("Which US State does this data describe?\n")
     accts = organize_by_acct(type_list, data_file)
     menu(accts, type_list, Errors)
     data_file.close()
@@ -218,7 +218,7 @@ def fix_case(words):
     return space_delimiter.join(fixed_list)
 
 def remove_punctuation(line):
-    for punc in string.punctuation:
+    for punc in [',', '\"', '\'']:
         line = line.replace(punc,'')
     return line
 
@@ -246,7 +246,7 @@ def sort_keys(type_list):
 
 def print_header(sorted_keys, address_file):
     for i in range(len(sorted_keys)):
-        address_file.write(sorted_keys[i])
+        address_file.write(remove_punctuation(sorted_keys[i]))
         if i != len(sorted_keys) - 1:
             address_file.write(',')
         else:
