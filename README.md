@@ -1,16 +1,18 @@
 GeoDataModeling
 ===============
 Notes:
-    -Case usually does not influence the program in any ways, except for two
-     distinct cases:
-        Case 1: When entering file names
-        Case 2: In the AddressPreFormatter module, when prompted for a state
-                the case is relevant to the format in the file
+
+    Case: Case usually does not influence the program in any ways, except for
+          two distinct cases:
+            Case 1: When entering file names
+            Case 2: In the AddressPreFormatter module, when prompted for a state
+                    the case is relevant to the format in the file
                 
-    -When prompted for a file, the input can be a full path starting from the
-     drive, ex: "C:/Users/Me/Desktop/file.txt" or it can be relative if it is
-     in the same directory as the currently running module, ex: "file.txt" is
-     fine if the script is in "C;/Users/Me/Desktop"
+    FileNames: When prompted for a file, the input can be a full path starting
+               from the
+               drive, ex: "C:/Users/Me/Desktop/file.txt" or it can be relative if it is
+               in the same directory as the currently running module, ex: "file.txt" is
+               fine if the script is in "C;/Users/Me/Desktop"
 
 Troubleshooting:
 
