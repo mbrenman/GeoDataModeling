@@ -16,9 +16,11 @@ import string
 delimiter = '|'
 NON_FIELD = 'NONFIELD' #Field names are only lowercase in the system, so there
                   #is no chance of conflict with this name
+INTERSECTION = None
 
 def main():
     dataFile = get_file('input')
+    get_intersection()
     set_delimiter()
     typeList = read_header(dataFile)
     accts = organize(typeList, dataFile)
@@ -44,6 +46,14 @@ def get_file(filetype, use='r', filename=''):
         return get_file(filetype, use)
     else:
         return data_file
+
+def get_intersection():
+    interExist = raw_input('Does the file contain intersection markers? (y/n)\n'
+                           'Ex:(Main St @ Fake Rd)\n')
+    if (interExist.lower() == 'y'):
+        global INTERSECTION
+        INTERSECTION = raw_input('Enter intersection marker'
+                                 'with no extra spaces.\n')
 
 def set_delimiter():
     global delimiter
@@ -114,18 +124,28 @@ def get_direction(typeList, accts):
     typeList.append(newField)
     if dirField != NON_FIELD:
         for acct in accts:
-            dirCount = 0
-            direction = ''
-            addrCheck = ' ' + acct[dirField].lower() + ' '
-            for dir in dirs:
-                if dir in addrCheck:
-                    direction = dir
-                    dirCount += 1
-            if dirCount == 1:
-                acct[newField] = direction
-                acct[dirField] = addrCheck.replace(direction, '')
+            if (not is_intersection(acct[dirField])):
+                dirCount = 0
+                direction = ''
+                addrCheck = ' ' + acct[dirField].lower() + ' '
+                for dir in dirs:
+                    if dir in addrCheck:
+                        direction = dir
+                        dirCount += 1
+                if dirCount == 1:
+                    acct[newField] = direction
+                    acct[dirField] = addrCheck.replace(direction, '')
+                else:
+                    acct[newField] = ''
             else:
                 acct[newField] = ''
+
+def is_intersection(address):
+    if (INTERSECTION == None):
+        return False
+    elif (INTERSECTION in address):
+        return True
+    return False
 
 def get_suffixes(typeList, accts):
     suffixes = [' street ', ' road ', ' drive ', ' pike ', ' lane ',
@@ -137,16 +157,19 @@ def get_suffixes(typeList, accts):
     typeList.append(newField)
     if suffixField != NON_FIELD:
         for acct in accts:
-            suffixCount = 0
-            ssfx = ''
-            addrCheck = ' ' + acct[suffixField].lower() + ' '
-            for suffix in suffixes:
-                if suffix in addrCheck:
-                    ssfx = suffix
-                    suffixCount += 1
-            if suffixCount == 1:
-                acct[newField] = ssfx
-                acct[suffixField] = addrCheck.replace(ssfx, '')
+            if (not is_intersection(acct[suffixField])):
+                suffixCount = 0
+                ssfx = ''
+                addrCheck = ' ' + acct[suffixField].lower() + ' '
+                for suffix in suffixes:
+                    if suffix in addrCheck:
+                        ssfx = suffix
+                        suffixCount += 1
+                if suffixCount == 1:
+                    acct[newField] = ssfx
+                    acct[suffixField] = addrCheck.replace(ssfx, '')
+                else:
+                    acct[newField] = ''
             else:
                 acct[newField] = ''
 
