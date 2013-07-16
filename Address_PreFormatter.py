@@ -10,6 +10,7 @@
 #-------------------------------------------------------------------------------
 
 import string
+import re
 
 #Global Variables -- Can be overwritten if a file with different
 #headers is given (Will be prompted at runtime)
@@ -89,56 +90,25 @@ def organize(typeList, dataFile):
     return accts
 
 def get_street_numbers(typeList, accts):
-    digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
     streetField = get_valid_field_name(typeList, 'Street Number')
     newField = find_replacement_name('streetnumb', 'Street Number', typeList)
     typeList.append(newField)
+    exp = r'\b[1-9]\d*?\b'
     if streetField != NON_FIELD:
         for acct in accts:
-            whitespace = False
-            streetNum = ''
-            for char in acct[streetField]:
-                if char in digits:
-                    streetNum += char
-                elif char == ' ':
-                    whitespace = True
-                    break
-                else:
-                    #Avoids problems with streets like 5th street with no number
-                    #or intersections with numbered streets
-                    streetNum = ''
-                    break
-            acct[newField] = streetNum
-            acct[streetField] = acct[streetField][len(streetNum):]
-            if whitespace:
-                #Whitespace field is needed in case a field already
-                #contains just the number (out of bounds issue)
-                acct[streetField] = acct[streetField][1:]
+            if not is_intersection(acct[streetField]):
+                apply_expression(exp, acct, streetField, newField)
+
 
 def get_direction(typeList, accts):
-    dirs = [' north ', ' south ', ' east ', ' west ',
-            ' n ', ' s ', ' e ', ' w ',
-            ' n. ', ' s. ', ' e. ', ' w. ']
     dirField = get_valid_field_name(typeList, 'Direction')
     newField = find_replacement_name('pdir', 'Direction', typeList)
     typeList.append(newField)
+    exp = r'(?i)\b(north|south|east|west|n|s|e|w)\.?\b'
     if dirField != NON_FIELD:
         for acct in accts:
-            if (not is_intersection(acct[dirField])):
-                dirCount = 0
-                direction = ''
-                addrCheck = ' ' + acct[dirField].lower() + ' '
-                for dir in dirs:
-                    if dir in addrCheck:
-                        direction = dir
-                        dirCount += 1
-                if dirCount == 1:
-                    acct[newField] = direction
-                    acct[dirField] = addrCheck.replace(direction, '')
-                else:
-                    acct[newField] = ''
-            else:
-                acct[newField] = ''
+            if not is_intersection(acct[dirField]):
+               apply_expression(exp, acct, dirField, newField)
 
 def is_intersection(address):
     if (INTERSECTION == None):
@@ -148,48 +118,25 @@ def is_intersection(address):
     return False
 
 def get_suffixes(typeList, accts):
-    suffixes = [' street ', ' road ', ' drive ', ' pike ', ' lane ',
-                ' avenue ', ' way ', ' circle ', ' terrace ', ' boulevard ',
-                ' st ', ' rd ', ' dr ', ' pk ', ' ln ', ' ave ', ' cir ',
-                ' ter ', ' blvd ']
+    exp = (r'(?i)\b(street|road|drive|pike|lane|avenue|way|circle|terrace|' +
+           r'boulevard|st|rd|dr|pk|ln|ave|cir|ter|blvd)[\,\.]?\b')
     suffixField = get_valid_field_name(typeList, 'Street Suffix')
     newField = find_replacement_name('ssfx', 'Street Suffix', typeList)
     typeList.append(newField)
     if suffixField != NON_FIELD:
         for acct in accts:
             if (not is_intersection(acct[suffixField])):
-                suffixCount = 0
-                ssfx = ''
-                addrCheck = ' ' + acct[suffixField].lower() + ' '
-                for suffix in suffixes:
-                    if suffix in addrCheck:
-                        ssfx = suffix
-                        suffixCount += 1
-                if suffixCount == 1:
-                    acct[newField] = ssfx
-                    acct[suffixField] = addrCheck.replace(ssfx, '')
-                else:
-                    acct[newField] = ''
-            else:
-                acct[newField] = ''
+                apply_expression(exp, acct, suffixField, newField)
 
 def get_zip_codes(typeList, accts):
-    digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    exp = (r'\b\d{5}(?:[-\s]?\d{4})?\b')
     zipField = get_valid_field_name(typeList, 'Zip Code')
     newField = find_replacement_name('zip', 'Zip Code', typeList)
     typeList.append(newField)
     if zipField != NON_FIELD:
         for acct in accts:
-            zipcode = ''
-            for char in acct[zipField]:
-                if char in digits:
-                    zipcode += char
-                else:
-                    zipcode = ''
-                if len(zipcode) == 5:
-                    break
-            acct[newField] = zipcode
-            acct[zipField] = acct[zipField].replace(zipcode, '')
+            if (not is_intersection(acct[zipField])):
+                apply_expression(exp, acct, zipField, newField)
 
 def get_cities(typeList, accts):
     cityField = get_valid_field_name(typeList, 'City')
@@ -342,6 +289,14 @@ def format_for_printing(data):
     data = data.replace(',', '')
     data = data.replace('|', '')
     return string.capwords(data)
+
+def apply_expression(exp, acct, field, newField):
+    answer = re.findall(exp, acct[field])
+    found = ''
+    if answer != []:
+        found = answer[0]
+        acct[field] = acct[field].replace(found, ' ')
+    acct[newField] = found
 
 if __name__ == '__main__':
     main()
