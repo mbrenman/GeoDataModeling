@@ -1,27 +1,33 @@
 README for Address_PreFormatter
-Version 1 - Initial commit
 Matt Brenman
 ----------__________----------__________----------__________----------__________
 Purpose:
+        Much of the logic in the Address_PreFormatter is performed using regular
+     expressions. While this is not a perfect solution, it does allow for much 
+     simpler code, which in turn is easier to understand and read.
         The Address_PreFormatter is designed to parse addresses into their
      discrete fields, so that they can run on the Address_Getter and Error_Fixer
      modules, which utilize very separated information. This module attempts to
      split any address into the following pieces:
         -Street Number
-           -Defined as a series of numbers followed by whitespace. This is the
-            definition to avoid complication with streets like 5th street, but
-            it does have issues with numbers like 111-a, which do not follow
-            the format. This usually ends up with the number being concatenated
-            with the street name, which does not cause a geocoding issue, but
-            does make the Error_Fixer not as efficient
+           -Defined as a series of numbers followed by whitespace, where the first 
+            number is a non-zero digit. This is the definition to avoid 
+            complication with streets like 5th street, but it does have issues 
+            with numbers like 111-a, which do not follow the format. This usually 
+            ends up with the number being concatenated with the street name, which 
+            does not cause a geocoding issue, but does make the Error_Fixer not as 
+            efficient
         -Street Direction
-           -Defined as North, South, East, West, N, S, E, W, N., S., E., and W.
+           -Defined as North, South, East, West, N, S, E, W, or any of these
+           followed by a period. There also needs to be a break on either side
+           of the direction (whitespace or end of string)
         -Street Name
            -Street names are taken after everything else, so that if there were
             fields with street name, they will have been removed and usually only 
             the street name will remain.
         -Street Suffix
-           -Defined as lane, road, street, ln, rd, st, etc.
+           -Defined as lane, road, street, ln, rd, st, etc. or any of these with a
+           period. All need to be break padded.
         -City
            -City, like the street name, is also taken as what is left over from
             the field after all else is removed. This is not a problem when the
@@ -33,9 +39,7 @@ Purpose:
             module. This will be updated in a later version so that bigger
             files spanning multiple states can be run through the entire loop
         -Zip Code
-           -As of version 1, a zip code is only a string of 5 digits padded by
-            whitespace or the end of the field. Support for 9 digit codes will
-            be added.
+           -Zipcode is now of the format XXXXX-XXXX, where all are numbers.
 
 Intersections:
         ArcMap supports the geocoding of intersections as well as street 
@@ -74,7 +78,6 @@ From Excel to Pipe Delimited File
      steps to do this are outlined here: http://www.howtogeek.com/howto/21456/
 
 To Do List:
-     -Support ZIP4 codes
      -Keep state information (and multistate files)
      -Support street numbers with letters as well
      -Implement city/State differentiation
