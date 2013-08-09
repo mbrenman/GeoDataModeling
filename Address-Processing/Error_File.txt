@@ -158,3 +158,85 @@ PA|Reading|||flying hills village center,village center||,dr
 PA|Reading|||flying hills village ceneter,village center||,dr
 PA|Reading|||flying hills corp ctr,village center||,dr
 PA|Reading|||flying hills vlg,village center||,dr
+PA|St. Davids,St Davids|||||
+PA|Bristol|||Radcliff,Radcliffe||
+PA|Reading|||Big Oak||road,
+PA|Geigertown,Birdsboro|19523,19508||Haycreek,hay creek||
+PA|Geigertown,Birdsboro|19523,19508||cold run||
+PA|reading,mohnton|19607,19540||kachel||
+PA|,cheltenham|19027||wahington||avenue
+PA|broomall,havertown|19008||Chester|west|pike
+PA|king of prussia|19046||hansen,hansen access||rd
+PA|king of prussia 6|19440,19406||swedeland||rd
+PA|,Newtown sqare|19063,19073||media line|south|road
+PA|valley forge,phoenixville|19355,19460||horshoe||trail
+PA|west chester|19380||thorncroft||rd,dr
+PA|wayne|19087||timber creek||,dr
+PA|king of prussia,wayne|19406||county line||road
+IL|bourbonnais|||arthur burch|,N|,Dr
+IL|Bourbonnais|||blanchette||,ave
+IL|dahinda|||briarwood pl/fr,briarwood||,pl
+IL|grant park|60940||butler|,E|,ave
+IL|danville|61834||catlin/tilton,catlin tilton||rd
+IL|bourbonnais|60914||cleveland|s|,ave
+IL|bradley|60915||durham|e|,st
+IL|bourbonnais|60914||Edgemere|,N|,dr
+IL|bourbonnais|60914||fox,fox trail||trl,drive
+IL|danville|61832||franklin||,st
+IL|danville|||greenwood cem,greenwood cemetery||rd
+IL|danville|61832||hegeler|,E|,ln
+IL|bourbonnais|||john casey||,rd
+IL|tilton|61833,61832||king||st
+IL|bourbonnais|60914,60915||kinzie||,ave
+IL|dahinda|61428||knollridge cr/fr,knollridge||,circle
+IL|bourbonnais|60914||latham,William R Latham Senior||,dr
+IL|bradley|60915||lawn|w|,street
+IL|kankakee|60901||lennington,lennington circle northwest|nw|,
+IL|kankakee|60901||lennington,lennington circle northeast|ne|,
+IL|bradley|60915||liberty||,st
+IL|bourbonnais|||northfield||mdws,meadows
+IL|,bourbonnais|,60914|,1600|northfield,State Route 50|,N|mall,
+IL|hawthorn woods|60047||open,open parkway south|s,|pkwy,
+IL|hawthorn woods|60047||open,open parkway north|n,|pkwy,
+IL|bourbonnais|60914||rivard||ave,street
+IL|bourbonnais|60914||river,river pl||pl,dr
+IL|kankakee|60901||strasma,strasma w|,|dr
+IL|bradley|60915||superior|,|,street
+IL|bourbonnais|60914||teresa,theresa||ln
+IL|bourbonnais|60914||tetrault||,ave
+IL|bourbonnais|60914||tomagene||,Dr
+IL|hawthorn woods|60047||tournament|s,|dr,dr s
+IL|hawthorn woods|60047||tournament|n,|dr,dr n
+IL|hawthorn woods|60047||tournament|e,|dr,dr e
+IL|aroma park|60910,60901||waldron||rd
+IL|bradley|60915,60914||willowbrook,willow brook||,dr
+IL|bourbonnais|60914||wm latham,William R Latham Senior||,dr
+IL|university park,calumet city|64066,60409||exchange||,ave
+IL|bradley|||franklin||,st
+IL|bourbonnais,bradley|,60915||kinzie||ave
+IL|dahinda|61428||lakeview,lakeview rd north|n,|rd,
+IL|grant park,manteno|60940,60950||park||st
+IL|danville|61832||pershing||,street
+IL|philo|61864||pershing||,court
+IL|university park|60466,60484||pine,pine trace||trce,ct
+IL|dahinda|61428||pleasantview/fr,pleasant view||,circle
+IL|dahinda|61428||pleasant view/fr,pleasant view||,circle
+IL|crete|60417||royal,royal crest|,S|crst,drive
+IL|crete|60417||royal,royal ridge|,E|rdg,drive
+IL|dahinda|61428||s lakeview rd/fr,lakeview road south||
+IL|dahinda|61428||s lakeview rd/ww,lakeview road south||
+IL|joliet|60433||siegmund|s|,street
+IL|bourbonnais|60914||st michael||,dr
+IL|bourbonnais|60914||steeple chase,steeplechase||
+IL|bourbonnais|60914||steeplechase||,circle
+IL|poplar grove|61065||tamarack hollow||dr,street
+IL|university park|60466,60484||towncenter||dr
+IL|monee|60449||tuscany,tuscany dr E|,S|,
+IL|aroma park|60910,60901||waldron||rd
+IL|tilton|61833||washinton||,street
+IL|danville|61832,61834||west newell,newell|,west|,rd
+IL|university park|60466,60971||hickory creek||dr
+PA|brittany farmshighland,New Britain|18914,18901||butler||dr,ave
+PA|Selinsgrove|17870|,1|susquehanna valley,susquehanna Mall||mall,dr
+PA|mifflinville,bloomsburg|18631,17815||third|w|st
+PA|newtown square|19073,19073||whispering brk,whispering brook||dr
