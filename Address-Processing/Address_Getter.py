@@ -28,12 +28,9 @@ State = "state"
 FirstName = "firstname"
 LastName = "lastname"
 ServiceType = "servicetyp"
-curState = "PA"
 newAddress = 'newAddress'
 
 def main():
-    global curState
-    curState = raw_input("Which US State does this data describe?\n")
     Errors = setup()
     data_file, type_list = get_file()
     accts = organize_by_acct(type_list, data_file)
@@ -180,7 +177,7 @@ def fix_address(raw_address, Errors):
     edit_address[StreetSuffix] = raw_address[StreetSuffix].lower()
     edit_address[Zip] = format_zipcodes(raw_address[Zip])
     edit_address[City] = raw_address[City].strip().lower()
-    edit_address[State] = curState
+    edit_address[State] = raw_address[State]
     return Error_Fixer.fix_addresses(Errors, edit_address)
 
 def format_zipcodes(zipcode):
@@ -241,7 +238,6 @@ def sort_keys(type_list):
     for key in type_list:
         sorted_keys.append(key)
     sorted_keys.append(newAddress)
-    sorted_keys.append(State)
     return sorted(sorted_keys)
 
 def print_header(sorted_keys, address_file):
